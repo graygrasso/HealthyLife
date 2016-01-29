@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--展示具体信息页面-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_back"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title">
+
+            <!--标题-->
+            <TextView
+                android:id="@+id/tv_titleDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/fifteen"
+                android:layout_marginLeft="@dimen/fifteen"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/tv_titleDetail"
+                android:layout_marginTop="@dimen/five"
+                android:background="@color/orange" />
+
+            <!--关键词-->
+            <TextView
+                android:id="@+id/tv_keywords"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_titleDetail"
+                android:layout_marginLeft="@dimen/twenty"
+                android:layout_marginTop="@dimen/twenty" />
+
+            <!--浏览量-->
+            <TextView
+                android:id="@+id/tv_countDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/tv_keywords"
+                android:layout_marginRight="@dimen/fifteen" />
+
+            <!--描述-->
+            <TextView
+                android:id="@+id/tv_descriptionDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_countDetail"
+                android:layout_marginLeft="@dimen/fifteen"
+                android:layout_marginRight="@dimen/fifteen"
+                android:layout_marginTop="@dimen/ten" />
+
+            <ImageView
+                android:id="@+id/img_itemDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_descriptionDetail"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/fifteen" />
+
+            <!--内容-->
+            <TextView
+                android:id="@+id/tv_contentDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_itemDetail"
+                android:layout_marginLeft="@dimen/fifteen"
+                android:layout_marginRight="@dimen/fifteen"
+                android:layout_marginTop="@dimen/ten" />
+
+            <!--显示书籍信息的内容-->
+            <ListView
+                android:id="@+id/lv_book_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_contentDetail" />
+
+            <!--疾病详情-->
+            <LinearLayout
+                android:id="@+id/linear_illness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_contentDetail"
+                android:layout_marginLeft="@dimen/fifteen"
+                android:layout_marginRight="@dimen/fifteen"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:textSize="@dimen/font_m" />
+
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn1"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv1"
+                    android:background="@color/transparent"
+                    android:textSize="@dimen/font_m" />
+
+                <TextView
+                    android:id="@+id/tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn2"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv2"
+                    android:background="@color/transparent"
+                    android:textSize="@dimen/font_m" />
+
+                <TextView
+                    android:id="@+id/tv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn3"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv3"
+                    android:background="@color/transparent"
+                    android:textSize="@dimen/font_m" />
+
+                <TextView
+                    android:id="@+id/tv4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn4"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv4"
+                    android:background="@color/transparent"
+                    android:textSize="@dimen/font_m" />
+
+                <TextView
+                    android:id="@+id/tv5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn5"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btn6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv5"
+                    android:background="@color/transparent"
+                    android:textSize="@dimen/font_m" />
+
+                <TextView
+                    android:id="@+id/tv6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/btn6"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!--药店和医院的地图-->
+            <Button
+                android:id="@+id/btn_showMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看地图"
+                android:background="@color/transparent"
+                android:layout_below="@id/tv_contentDetail"
+                android:visibility="gone"
+                android:textColor="@color/title_green"
+                android:layout_marginLeft="@dimen/fifteen"/>
+            <!--评论数-->
+            <TextView
+                android:id="@+id/tv_rcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/five"
+                android:layout_marginRight="@dimen/five" />
+
+            <!--收藏数-->
+            <TextView
+                android:id="@+id/tv_fcount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/five"
+                android:layout_marginRight="@dimen/ten"
+                android:layout_toLeftOf="@id/tv_rcount" />
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

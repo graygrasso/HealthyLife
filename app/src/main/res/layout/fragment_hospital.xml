@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <include
+        android:id="@+id/title_hospital"
+        layout="@layout/title_classify" />
+
+    <TextView
+        android:id="@+id/tv_myLocation0"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/thirty"
+        android:layout_below="@id/title_hospital"
+        android:layout_marginLeft="@dimen/five"
+        android:layout_marginTop="@dimen/ten"
+        android:text="我的位置: "
+        android:textSize="@dimen/font_m" />
+
+    <TextView
+        android:id="@+id/tv_myLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/thirty"
+        android:layout_below="@id/title_hospital"
+        android:layout_marginTop="@dimen/ten"
+        android:layout_toRightOf="@id/tv_myLocation0" />
+
+    <ImageView
+        android:id="@+id/img_line0"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one"
+        android:layout_below="@id/tv_myLocation0"
+        android:background="@color/title_green" />
+
+    <LinearLayout
+        android:id="@+id/layout_btns"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_line0">
+
+        <Button
+            android:id="@+id/btn_showHospital"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/title_green"
+            android:text="医院"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font_m" />
+
+        <ImageView
+            android:layout_width="@dimen/one"
+            android:layout_height="match_parent"
+            android:background="@color/title_green" />
+
+        <Button
+            android:id="@+id/btn_showDrugStore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:text="药店"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font_m" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_line1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one"
+        android:layout_below="@id/layout_btns"
+        android:background="@color/title_green" />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/lv_hospital"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/img_line1"
+        android:background="@color/white"
+        android:cacheColorHint="#00000000" />
+    <!--
+        <WebView
+            android:id="@+id/mywebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />-->
+</RelativeLayout>

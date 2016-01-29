@@ -1,0 +1,32 @@
+
+apply plugin: 'android-library'
+
+repositories
+        {
+            mavenCentral()
+        }
+
+android
+        {
+            compileSdkVersion 22 //注意此处应改为项目对应的SDK版本,可在app下的build.gradle中查看具体版本
+            buildToolsVersion "23.0.2" //注意此处应改为项目对应版本
+
+            defaultConfig
+                    {
+                        minSdkVersion 15
+                        targetSdkVersion 22
+                    }
+
+            sourceSets
+                    {
+                        main
+                                {
+                                    manifest.srcFile 'AndroidManifest.xml'
+                                    java.srcDirs = ['src']
+                                    resources.srcDirs = ['src']
+                                    aidl.srcDirs = ['src']
+                                    res.srcDirs = ['res']
+                                }
+                    }
+
+        }

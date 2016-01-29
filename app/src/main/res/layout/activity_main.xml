@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    tools:context="com.graygrass.healthylife.MainActivity">
+    <!--屏幕正中的部分-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/title_main" />
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/title" />
+
+        <!--提示是否联网-->
+        <RelativeLayout
+            android:id="@+id/layout_isNetworkAvailable"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/forty"
+            android:layout_above="@id/frameLayout"
+            android:layout_alignParentBottom="true"
+            android:background="@color/pink_blue"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_isNetworkAvailable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/ten"
+                android:text="@string/tv_isNetworkAvailable" />
+
+            <Button
+                android:id="@+id/btn_isNetworkAvailable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@color/transparent"
+                android:text="@string/cancel"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <!--侧滑的左边部分(注意加入clickable="true"防止点击侧滑菜单空白处穿透)-->
+    <LinearLayout
+        android:id="@+id/layout_left"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/gray"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/title_green" />
+
+            <ImageView
+                android:id="@+id/img_icon"
+                android:layout_width="90dp"
+                android:layout_height="80dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/twenty"
+                android:background="@drawable/icon3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/twenty"
+                android:layout_toRightOf="@id/img_icon"
+                android:text="健康生活"
+                android:textColor="@color/white"
+                android:textSize="@dimen/fontSize_top" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty"
+            android:layout_marginTop="@dimen/twenty"
+            android:background="@color/theme_green">
+
+            <ImageView
+                android:id="@+id/img_index"
+                android:layout_width="@dimen/img_icon"
+                android:layout_height="@dimen/img_icon"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:src="@drawable/drug" />
+
+            <TextView
+                android:id="@+id/tv_index"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:layout_toRightOf="@id/img_index"
+                android:text="首页(～￣▽￣)～"
+                android:textSize="@dimen/font_m" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty"
+            android:layout_marginTop="@dimen/twenty">
+
+            <ImageView
+                android:id="@+id/img_search"
+                android:layout_width="@dimen/img_icon"
+                android:layout_height="@dimen/img_icon"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:src="@drawable/search" />
+
+            <TextView
+                android:id="@+id/tv_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:layout_marginTop="@dimen/thirty"
+                android:layout_toRightOf="@id/img_search"
+                android:text="查询(＾－＾)"
+                android:textSize="@dimen/font_m" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty"
+            android:layout_marginTop="@dimen/twenty">
+
+            <ImageView
+                android:id="@+id/img_food"
+                android:layout_width="@dimen/img_icon"
+                android:layout_height="@dimen/img_icon"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:src="@drawable/cup" />
+
+            <TextView
+                android:id="@+id/tv_food"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:layout_marginTop="@dimen/thirty"
+                android:layout_toRightOf="@id/img_food"
+                android:text="健康食物(≧∇≦)ﾉ"
+                android:textSize="@dimen/font_m" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty"
+            android:layout_marginTop="@dimen/twenty">
+
+            <ImageView
+                android:id="@+id/img_foodMenu"
+                android:layout_width="@dimen/img_icon"
+                android:layout_height="@dimen/img_icon"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:src="@drawable/book" />
+
+            <TextView
+                android:id="@+id/tv_foodMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:layout_marginTop="@dimen/thirty"
+                android:layout_toRightOf="@id/img_foodMenu"
+                android:text="健康菜谱(☆▽☆)"
+                android:textSize="@dimen/font_m" />
+        </RelativeLayout>
+
+        <!--周边的医院药店-->
+        <RelativeLayout
+            android:id="@+id/layout5"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty"
+            android:layout_marginTop="@dimen/twenty">
+
+            <ImageView
+                android:id="@+id/img_rim"
+                android:layout_width="@dimen/img_icon"
+                android:layout_height="@dimen/img_icon"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:src="@drawable/medkit" />
+
+            <TextView
+                android:id="@+id/tv_rim"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:layout_marginTop="@dimen/thirty"
+                android:layout_toRightOf="@id/img_rim"
+                android:text="附近医院、药店"
+                android:textSize="@dimen/font_m" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout6"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fifty"
+            android:layout_marginTop="@dimen/twenty">
+
+            <ImageView
+                android:id="@+id/img_about"
+                android:layout_width="@dimen/img_icon"
+                android:layout_height="@dimen/img_icon"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:src="@drawable/mine" />
+
+            <TextView
+                android:id="@+id/tv_about"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/thirty"
+                android:layout_marginTop="@dimen/thirty"
+                android:layout_toRightOf="@id/img_about"
+                android:text="我的主页(*^__^*)"
+                android:textSize="@dimen/font_m" />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v4.widget.DrawerLayout>

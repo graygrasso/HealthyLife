@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--健康图书分类-->
+    <Spinner
+        android:id="@+id/sp_book_classify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/five"
+        android:popupBackground="@android:color/white"
+        />
+
+    <!--健康图书详情-->
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/lv_book"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:cacheColorHint="#00000000" />
+</LinearLayout>

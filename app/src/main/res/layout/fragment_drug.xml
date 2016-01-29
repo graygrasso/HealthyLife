@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!--药品分类-->
+    <Spinner
+        android:id="@+id/sp_drug_classify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:popupBackground="@android:color/white"
+         />
+    <!--药品详情-->
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/lv_drug"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="#00000000"/>
+</LinearLayout>
