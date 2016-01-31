@@ -1,6 +1,9 @@
 package com.graygrass.healthylife.util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -8,6 +11,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 /**
  * Created by 橘沐 on 2015/12/17.
@@ -23,5 +29,21 @@ public class DoRequest {
 
         queue.add(request);
 
+    }
+
+    public static void doImageRequest(String url, final ImageView img) {
+        if (url != null && !url.equals("")) {
+            final DisplayImageOptions options = new DisplayImageOptions.Builder()
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .build();
+            ImageLoader.getInstance().loadImage(url, options, new SimpleImageLoadingListener() {
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    super.onLoadingComplete(imageUri, view, loadedImage);
+                    img.setImageBitmap(loadedImage);
+                }
+            });
+        }
     }
 }

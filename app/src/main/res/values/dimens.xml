@@ -1,23 +1,25 @@
 <resources>
+    <dimen name="font_s">15sp</dimen>
+    <dimen name="font_m">16sp</dimen>
+    <dimen name="font_l">17sp</dimen>
+    <dimen name="font_xl">18sp</dimen>
+
+
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fontSize_top">17sp</dimen>
-    <dimen name="ten">10dp</dimen>
-    <dimen name="fifty">50dp</dimen>
-    <dimen name="forty">40dp</dimen>
-    <dimen name="five">5dp</dimen>
-    <dimen name="twenty">20dp</dimen>
-    <dimen name="fifteen">15dp</dimen>
-    <dimen name="font_s">15sp</dimen>
-    <dimen name="thirty">30dp</dimen>
-    <dimen name="font_m">16sp</dimen>
-    <dimen name="img_icon">24dp</dimen>
+
     <dimen name="one">1dp</dimen>
     <dimen name="two">2dp</dimen>
+    <dimen name="five">5dp</dimen>
+    <dimen name="ten">10dp</dimen>
+    <dimen name="fifteen">15dp</dimen>
+    <dimen name="twenty">20dp</dimen>
+    <dimen name="img_icon">24dp</dimen>
+    <dimen name="thirty">30dp</dimen>
+    <dimen name="forty">40dp</dimen>
+    <dimen name="fifty">50dp</dimen>
     <dimen name="ninety">90dp</dimen>
-    <dimen name="txt_login">18sp</dimen>
-    <dimen name="txt_confirm">15sp</dimen>
-    <dimen name="btn_size">300dp</dimen>
     <dimen name="hundred">100dp</dimen>
+    <dimen name="btn_size">300dp</dimen>
 </resources>

@@ -12,13 +12,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.graygrass.healthylife.ItemActivity;
+import com.graygrass.healthylife.activity.ItemActivity;
 import com.graygrass.healthylife.MyApplication;
 import com.graygrass.healthylife.R;
 import com.graygrass.healthylife.adapter.ModelAdapter;

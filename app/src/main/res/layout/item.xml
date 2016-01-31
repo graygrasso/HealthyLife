@@ -19,7 +19,7 @@
         android:layout_toRightOf="@id/img_item"
         android:layout_marginTop="@dimen/five"
         android:text="标题"
-        android:textSize="@dimen/fontSize_top"
+        android:textSize="@dimen/font_l"
         android:textStyle="bold" />
 
     <TextView

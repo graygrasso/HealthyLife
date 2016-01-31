@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray"
-    tools:context="com.graygrass.healthylife.MainActivity">
+    tools:context=".activity.MainActivity">
     <!--屏幕正中的部分-->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -85,7 +85,7 @@
                 android:layout_toRightOf="@id/img_icon"
                 android:text="健康生活"
                 android:textColor="@color/white"
-                android:textSize="@dimen/fontSize_top" />
+                android:textSize="@dimen/font_l" />
         </RelativeLayout>
 
         <RelativeLayout

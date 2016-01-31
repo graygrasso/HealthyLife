@@ -3,7 +3,6 @@ package com.graygrass.healthylife.fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -12,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -23,23 +20,19 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.graygrass.healthylife.ItemActivity;
-import com.graygrass.healthylife.MainActivity;
+import com.graygrass.healthylife.activity.ItemActivity;
+import com.graygrass.healthylife.activity.MainActivity;
 import com.graygrass.healthylife.MyApplication;
 import com.graygrass.healthylife.R;
 import com.graygrass.healthylife.adapter.ModelAdapter;
-import com.graygrass.healthylife.layout.RefreshableView;
 import com.graygrass.healthylife.model.KnowledgeModel;
 import com.graygrass.healthylife.util.Common;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import simplecache.ACache;
 
 /**
  * Created by 橘沐 on 2015/12/16.

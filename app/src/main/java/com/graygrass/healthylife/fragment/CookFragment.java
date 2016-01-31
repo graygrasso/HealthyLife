@@ -16,13 +16,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.graygrass.healthylife.CookListActivity;
-import com.graygrass.healthylife.MainActivity;
+import com.graygrass.healthylife.activity.CookListActivity;
+import com.graygrass.healthylife.activity.MainActivity;
 import com.graygrass.healthylife.MyApplication;
 import com.graygrass.healthylife.R;
 import com.graygrass.healthylife.model.CookClassifyModel;

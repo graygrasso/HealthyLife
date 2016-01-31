@@ -4,16 +4,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.graygrass.healthylife.MainActivity;
 import com.graygrass.healthylife.R;
 import com.graygrass.healthylife.adapter.ViewPagerAdapter;
 import com.graygrass.healthylife.layout.SlidingTabLayout;

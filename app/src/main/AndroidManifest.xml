@@ -35,22 +35,22 @@
             android:name="com.amap.api.v2.apikey"
             android:value="9db988ce311e94078a0ca442e5d54a68" />
 
-        <activity android:name=".SplashActivity">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ItemActivity" />
-        <activity android:name=".CookListActivity" />
-        <activity android:name=".IntroGuideActivity" />
-        <activity android:name=".MyMapActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.ItemActivity" />
+        <activity android:name=".activity.CookListActivity" />
+        <activity android:name=".activity.IntroGuideActivity" />
+        <activity android:name=".activity.MyMapActivity" />
+        <activity android:name=".activity.SettingActivity"/>
         <activity
-            android:name=".DialogLoginActivity"
+            android:name=".activity.DialogLoginActivity"
             android:theme="@style/loginActivityStyle" />
-        <activity android:name=".LoginActivity" />
 
         <!--shareSDK-->
         <activity

@@ -1,23 +1,30 @@
 package com.graygrass.healthylife.fragment;
 
-import android.app.AlertDialog;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.graygrass.healthylife.DialogLoginActivity;
-import com.graygrass.healthylife.MainActivity;
+import com.graygrass.healthylife.MyApplication;
 import com.graygrass.healthylife.R;
+import com.graygrass.healthylife.activity.DialogLoginActivity;
+import com.graygrass.healthylife.activity.MainActivity;
+import com.graygrass.healthylife.activity.SettingActivity;
+import com.graygrass.healthylife.util.DoRequest;
 
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
@@ -28,7 +35,9 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 public class MineFragment extends Fragment implements View.OnClickListener {
     private View view;
     private Button btn_login;
-    private RelativeLayout layout_share;
+    private RelativeLayout layout_share, layout_settings;
+    private TextView tv_sign;//个性签名
+    private ImageView img_user;
 
     @Nullable
     @Override
@@ -41,17 +50,31 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //获取用户登录信息缓存
+        String uName = MyApplication.mCache.getAsString("userName");
+        String uImage = MyApplication.mCache.getAsString("userImage");
+        String uDes = MyApplication.mCache.getAsString("userDescription");
+        if (!TextUtils.isEmpty(uName)) {
+            btn_login.setText(uName);
+            tv_sign.setText(uDes);
+            DoRequest.doImageRequest(uImage, img_user);
+        }
+
         initListener();
     }
 
     private void initView() {
         btn_login = (Button) view.findViewById(R.id.btn_login);
         layout_share = (RelativeLayout) view.findViewById(R.id.layout_share);
+        layout_settings = (RelativeLayout) view.findViewById(R.id.layout_settings);
+        tv_sign = (TextView) view.findViewById(R.id.tv_sign);
+        img_user = (ImageView) view.findViewById(R.id.img_user);
     }
 
     private void initListener() {
         btn_login.setOnClickListener(this);
         layout_share.setOnClickListener(this);
+        layout_settings.setOnClickListener(this);
     }
 
     /**
@@ -60,6 +83,14 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
+
+        //如果已经退出登录，则恢复初始状态
+        String userName = MyApplication.mCache.getAsString("userName");
+        if (TextUtils.isEmpty(userName)) {
+            btn_login.setText("点击登录");
+            tv_sign.setText("个性签名");
+            img_user.setImageResource(R.drawable.head);
+        }
 
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
@@ -109,11 +140,35 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                startActivity(new Intent(view.getContext(), DialogLoginActivity.class));
+                startActivityForResult(new Intent(view.getContext(), DialogLoginActivity.class), 100);
                 break;
             case R.id.layout_share:
                 showShare();
                 break;
+            case R.id.layout_settings:
+                Intent intent = new Intent(view.getContext(), SettingActivity.class);
+                startActivity(intent);
+                break;
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == 101) {
+            String userName = data.getStringExtra("userName");
+            String userImage = data.getStringExtra("userImage");
+            String userDescription = data.getStringExtra("description");
+            //将用户信息放进缓存
+            MyApplication.mCache.put("userName", userName);
+            MyApplication.mCache.put("userImage", userImage);
+            MyApplication.mCache.put("userDescription", userDescription);
+            //将用户信息放进控件显示
+            btn_login.setText(userName);
+            tv_sign.setText(userDescription);
+            DoRequest.doImageRequest(userImage, img_user);
+        }
+    }
+
+
 }

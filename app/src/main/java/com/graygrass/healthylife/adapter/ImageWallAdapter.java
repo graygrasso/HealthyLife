@@ -85,14 +85,6 @@ public class ImageWallAdapter extends BaseAdapter {
     private void doImageRequest(String url, ViewHolder viewHolder, int position) {
         if (url != null && !url.equals("")) {
             //有图片
-            //TODO 如何设置第一张图片显示比较大
-           /* if(position==0) {
-//                imageSize = new ImageSize(400, 320);
-                url="http://tnfs.tngou.net/image"+url+"_400x360";
-            }else {
-//                imageSize = new ImageSize(90, 70);
-                System.out.println("imgurl:>>>>>>>>>>>>>>>>> "+url);
-            }*/
             url = "http://tnfs.tngou.net/image" + url;  //图片完整地址
             if (url.equals("http://tnfs.tngou.net/image/lore/default.jpg"))
                 //图片为默认图片，证明无有效图片
