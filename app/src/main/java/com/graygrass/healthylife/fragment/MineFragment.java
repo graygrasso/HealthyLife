@@ -51,14 +51,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         //获取用户登录信息缓存
-        String uName = MyApplication.mCache.getAsString("userName");
-        String uImage = MyApplication.mCache.getAsString("userImage");
-        String uDes = MyApplication.mCache.getAsString("userDescription");
-        if (!TextUtils.isEmpty(uName)) {
-            btn_login.setText(uName);
-            tv_sign.setText(uDes);
-            DoRequest.doImageRequest(uImage, img_user);
-        }
+        isUserLogin();
 
         initListener();
     }
@@ -84,13 +77,8 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
 
-        //如果已经退出登录，则恢复初始状态
-        String userName = MyApplication.mCache.getAsString("userName");
-        if (TextUtils.isEmpty(userName)) {
-            btn_login.setText("点击登录");
-            tv_sign.setText("个性签名");
-            img_user.setImageResource(R.drawable.head);
-        }
+        //判断用户是否登录 如果已经退出登录，则恢复初始状态
+        isUserLogin();
 
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
@@ -140,7 +128,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-                startActivityForResult(new Intent(view.getContext(), DialogLoginActivity.class), 100);
+                startActivity(new Intent(view.getContext(), DialogLoginActivity.class));
                 break;
             case R.id.layout_share:
                 showShare();
@@ -152,23 +140,23 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == 101) {
-            String userName = data.getStringExtra("userName");
-            String userImage = data.getStringExtra("userImage");
-            String userDescription = data.getStringExtra("description");
-            //将用户信息放进缓存
-            MyApplication.mCache.put("userName", userName);
-            MyApplication.mCache.put("userImage", userImage);
-            MyApplication.mCache.put("userDescription", userDescription);
-            //将用户信息放进控件显示
-            btn_login.setText(userName);
-            tv_sign.setText(userDescription);
-            DoRequest.doImageRequest(userImage, img_user);
+    /**
+     * 判断用户是否登录并显示与否用户登录信息
+     */
+    public void isUserLogin() {
+        //获取缓存的用户信息
+        String uName = MyApplication.mCache.getAsString("userName");
+        String uImage = MyApplication.mCache.getAsString("userImage");
+        String uDes = MyApplication.mCache.getAsString("userDescription");
+        if (TextUtils.isEmpty(uName)) {
+            btn_login.setText("点击登录");
+            tv_sign.setText("个性签名");
+            img_user.setImageResource(R.drawable.head);
+        } else {
+            btn_login.setText(uName);
+            tv_sign.setText(uDes);
+            DoRequest.doImageRequest(uImage, img_user);
         }
     }
-
 
 }

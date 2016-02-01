@@ -163,10 +163,11 @@ public class IllnessFragment extends Fragment {
         final List<BodyModel.Tngou> list_body = body.getTngou();
         //获取身体大部位（如头、上、下肢）的名称并放入list1（放进spinner里的）
         List<String> list1 = new ArrayList<>();
-        for (int i = 0; i < list_body.size(); i++) {
-            String title = list_body.get(i).getName();
-            list1.add(title);
-        }
+        if (list_body != null && list_body.size() > 0)
+            for (int i = 0; i < list_body.size(); i++) {
+                String title = list_body.get(i).getName();
+                list1.add(title);
+            }
         //第二个spinner的适配器
         final ArrayAdapter<String> adapter1 = new ArrayAdapter<String>
                 (parentView.getContext(), R.layout.style_spinner, list1);

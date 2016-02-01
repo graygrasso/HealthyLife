@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.graygrass.healthylife.MyApplication;
 import com.graygrass.healthylife.R;
 import com.graygrass.healthylife.fragment.MineFragment;
 
@@ -43,7 +44,7 @@ public class DialogLoginActivity extends Activity implements PlatformActionListe
 
     @Override
     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-        String id, name = null, description = "", profile_image_url = null;
+        String id = null, name = null, description = "", profile_image_url = null;
         if (platform == ShareSDK.getPlatform(SinaWeibo.NAME)) {
             //解析部分用户资料字段(weibo登录)
             id = hashMap.get("id").toString();//ID
@@ -54,18 +55,17 @@ public class DialogLoginActivity extends Activity implements PlatformActionListe
             if (i == Platform.ACTION_USER_INFOR) {
                 PlatformDb platDB = platform.getDb();//获取数平台数据DB
                 //通过DB获取各种数据
-                platDB.getToken();
-                platDB.getUserGender();
+//                platDB.getToken();
+//                platDB.getUserGender();
                 profile_image_url = platDB.getUserIcon();
-                platDB.getUserId();
+                id = platDB.getUserId();
                 name = platDB.getUserName();
             }
         }
-        Intent intent = new Intent(DialogLoginActivity.this, MineFragment.class);
-        intent.putExtra("userName", name);
-        intent.putExtra("userImage", profile_image_url);
-        intent.putExtra("description", description);
-        setResult(101, intent);
+        MyApplication.mCache.put("userId", id); //将用户id放入缓存
+        MyApplication.mCache.put("userName", name); //将用户name放入缓存
+        MyApplication.mCache.put("userDescription", description); //将用户description放入缓存
+        MyApplication.mCache.put("userImage", profile_image_url); //将用户image放入缓存
         finish();
     }
 

@@ -15,6 +15,8 @@ import com.graygrass.healthylife.R;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * Created by 橘沐 on 2015/12/24.
  * 欢迎页面
@@ -98,5 +100,17 @@ public class SplashActivity extends Activity {
         editor.putBoolean("flag", false);
         //提交修改
         editor.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(SplashActivity.this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(SplashActivity.this);
     }
 }
