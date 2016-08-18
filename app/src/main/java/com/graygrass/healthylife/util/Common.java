@@ -1,5 +1,9 @@
 package com.graygrass.healthylife.util;
 
+import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
+
 /**
  * Created by 橘沐 on 2015/12/16.
  */
@@ -30,5 +34,4 @@ public class Common {
     public static final String cookShowUrl = "http://www.tngou.net/api/cook/show";
     public static final String drugStoreLocation = "http://www.tngou.net/api/store/location";//周边药店
     public static final String hospitalLocation = "http://www.tngou.net/api/hospital/location";//周边医院
-
 }

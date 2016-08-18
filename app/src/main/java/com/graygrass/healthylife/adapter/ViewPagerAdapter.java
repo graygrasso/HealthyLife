@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     private Context context;
     private ArrayList<Fragment> list;
-    private String[] tabTitles={"健康知识","药品大全","药店信息","健康图书","疾病信息"};
+    private String[] tabTitles={"健康知识","药品大全","健康图书","疾病信息"};
     public ViewPagerAdapter(FragmentManager fm, Context context, ArrayList<Fragment> list) {
         super(fm);
         this.context = context;
@@ -35,5 +36,11 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return tabTitles[position];
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+//        super.destroyItem(container, position, object);
+        //防止销毁fragment
     }
 }

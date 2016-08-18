@@ -38,4 +38,5 @@
     <string name="btn_stop">置零</string>
     <string name="btn_click">点击我</string>
     <string name="txt_otherMethod">——其他登录——</string>
+    <string name="map_type_route">请选择出行方式：</string>
 </resources>

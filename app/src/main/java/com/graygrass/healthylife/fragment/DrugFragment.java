@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class DrugFragment extends Fragment {
     private int page;
     private int drugListId;
     private List<DrugListModel.Tngou> druglist = null;
+    private ModelAdapter modelAdapter;
 
     @Nullable
     @Override
@@ -185,17 +187,17 @@ public class DrugFragment extends Fragment {
         final DrugListModel dl = gson.fromJson(s, DrugListModel.class);
         if (druglist == null || page == 1) {
             druglist = dl.getTngou();
+            modelAdapter = new ModelAdapter(druglist, parentView.getContext(), "druglist");
+            lv_drug.setAdapter(modelAdapter);
         } else {
             druglist.addAll(dl.getTngou());
+            modelAdapter.notifyDataSetChanged();
         }
-        ModelAdapter adapter = new ModelAdapter(druglist, parentView.getContext(), "druglist");
-        lv_drug.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
         lv_drug.onRefreshComplete();//刷新完成
         lv_drug.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                drugShow(dl.getTngou().get(position - 1).getId());//得到用于查询药品详情的id传入drugShow()
+                drugShow(druglist.get(position - 1).getId());//得到用于查询药品详情的id传入drugShow()
             }
         });
     }

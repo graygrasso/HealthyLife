@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -34,11 +37,17 @@ import cn.sharesdk.framework.ShareSDK;
 public class MainActivity extends FragmentActivity implements View.OnClickListener {
     private TextView tv_isNetworkAvailable;
     private ImageView img_showleft, title_img_search;
-    public static RelativeLayout layout1, layout2, layout3, layout4, layout5,layout6, layout_isNetworkAvailable;
+    public static RelativeLayout layout1, layout2, layout3, layout4, layout5, layout6, layout_isNetworkAvailable;
     private DrawerLayout drawerLayout;
     private LinearLayout layout_left;
     private Button btn_isNetworkAvailable;
-    private static Fragment healthFragment;
+    private HealthFragment healthFragment;
+    private SearchFragment searchFragment;
+    private FoodFragment foodFragment;
+    private HospitalFragment hospitalFragment;
+    private CookFragment cookFragment;
+    private MineFragment mineFragment;
+    private FragmentManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +68,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         initData();
         isNetworkAvailable();//判断当前网络是否可用
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
     }
 
     private void initView() {
@@ -91,8 +105,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void initData() {
+        manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
         healthFragment = new HealthFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.frameLayout, healthFragment).commit();
+        transaction.add(R.id.frameLayout, healthFragment, "healthFragment").commit();
 
         //侧滑页面显示2/3
         //获取屏幕宽度
@@ -106,49 +122,94 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        FragmentTransaction transaction;
         switch (v.getId()) {
             case R.id.img_showleft:
                 drawerLayout.openDrawer(Gravity.LEFT);
                 break;
-            case R.id.title_img_search:
-                clearLayoutColor();
-                layout2.setBackgroundColor(Color.parseColor("#5086C340"));
-                replaceFragment(new SearchFragment());
-                drawerLayout.closeDrawer(Gravity.LEFT);
-                break;
             case R.id.layout1:
                 clearLayoutColor();
+                transaction = manager.beginTransaction();
+                hideFragments(transaction);
                 layout1.setBackgroundColor(Color.parseColor("#5086C340"));
-                replaceFragment(healthFragment);
+//                replaceFragment(healthFragment);
+                transaction.show(healthFragment).commit();
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 break;
+            case R.id.title_img_search:
             case R.id.layout2:
+                transaction= manager.beginTransaction();
+                hideFragments(transaction);
                 clearLayoutColor();
-                replaceFragment(new SearchFragment());
+//                replaceFragment(searchFragment);
+                hideFragments(transaction);
+                if (searchFragment == null) {
+                    searchFragment = new SearchFragment();
+                    transaction.add(R.id.frameLayout, searchFragment);
+                } else {
+                    transaction.show(searchFragment);
+                }
+                transaction.commit();
                 layout2.setBackgroundColor(Color.parseColor("#5086C340"));
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 break;
             case R.id.layout3:
+                transaction= manager.beginTransaction();
+                hideFragments(transaction);
                 clearLayoutColor();
-                replaceFragment(new FoodFragment());
+//                replaceFragment(foodFragment);
+                if (foodFragment == null) {
+                    foodFragment = new FoodFragment();
+                    transaction.add(R.id.frameLayout, foodFragment);
+                } else {
+                    transaction.show(foodFragment);
+                }
+                transaction.commit();
                 layout3.setBackgroundColor(Color.parseColor("#5086C340"));
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 break;
             case R.id.layout4:
+                transaction= manager.beginTransaction();
+                hideFragments(transaction);
                 clearLayoutColor();
-                replaceFragment(new CookFragment());
+//                replaceFragment(cookFragment);
+                if (cookFragment == null) {
+                    cookFragment = new CookFragment();
+                    transaction.add(R.id.frameLayout, cookFragment);
+                } else {
+                    transaction.show(cookFragment);
+                }
+                transaction.commit();
                 layout4.setBackgroundColor(Color.parseColor("#5086C340"));
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 break;
             case R.id.layout5:
+                transaction= manager.beginTransaction();
+                hideFragments(transaction);
                 clearLayoutColor();
-                replaceFragment(new HospitalFragment());
+//                replaceFragment(hospitalFragment);
+                if (hospitalFragment == null) {
+                    hospitalFragment = new HospitalFragment();
+                    transaction.add(R.id.frameLayout, hospitalFragment);
+                } else {
+                    transaction.show(hospitalFragment);
+                }
+                transaction.commit();
                 layout5.setBackgroundColor(Color.parseColor("#5086C340"));
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 break;
             case R.id.layout6:
+                transaction= manager.beginTransaction();
+                hideFragments(transaction);
                 clearLayoutColor();
-                replaceFragment(new MineFragment());
+//                replaceFragment(mineFragment);
+                if (mineFragment == null) {
+                    mineFragment = new MineFragment();
+                    transaction.add(R.id.frameLayout, mineFragment);
+                } else {
+                    transaction.show(mineFragment);
+                }
+                transaction.commit();
                 layout6.setBackgroundColor(Color.parseColor("#5086C340"));
                 drawerLayout.closeDrawer(Gravity.LEFT);
                 break;
@@ -171,6 +232,27 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, fragment, "healthFragment").addToBackStack("healthFragment").commit();
     }
 
+    private void hideFragments(FragmentTransaction transaction) {
+        if (healthFragment != null) {
+            transaction.hide(healthFragment);
+        }
+        if (searchFragment != null) {
+            transaction.hide(searchFragment);
+        }
+        if (foodFragment != null) {
+            transaction.hide(foodFragment);
+        }
+        if (cookFragment != null) {
+            transaction.hide(cookFragment);
+        }
+        if (hospitalFragment != null) {
+            transaction.hide(hospitalFragment);
+        }
+        if (mineFragment != null) {
+            transaction.hide(mineFragment);
+        }
+    }
+
     //设置侧滑菜单所有linearLayout背景透明
     public void clearLayoutColor() {
         layout1.setBackgroundColor(Color.parseColor("#00000000"));
@@ -184,7 +266,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     /**
      * 双击退出应用
      */
-    /*long lastPress; //默认为0
+    long lastPress; //默认为0
 
     @Override
     public void onBackPressed() {
@@ -195,7 +277,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         } else {
             super.onBackPressed();
         }
-    }*/
+    }
 
     /**
      * 判断网络是否可用

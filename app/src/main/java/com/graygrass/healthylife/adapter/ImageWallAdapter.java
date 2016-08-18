@@ -2,6 +2,7 @@ package com.graygrass.healthylife.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.graygrass.healthylife.R;
 import com.graygrass.healthylife.model.CookListModel;
 import com.graygrass.healthylife.model.FoodListModel;
+import com.graygrass.healthylife.util.DoRequest;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -70,7 +72,7 @@ public class ImageWallAdapter extends BaseAdapter {
             imgUrl = food.getImg();
             name=food.getName();
         }
-        doImageRequest(imgUrl, viewHolder, position);
+        doImageRequest(imgUrl, viewHolder);
         viewHolder.photo_title.setText(name);
         return convertView;
     }
@@ -103,6 +105,19 @@ public class ImageWallAdapter extends BaseAdapter {
                     finalViewHolder.photo.setImageBitmap(loadedImage);
                 }
             });
+        }
+    }
+
+    private void doImageRequest(String url,ViewHolder viewHolder) {
+        if (url != null && !url.equals("")) {
+            //有图片
+            url = "http://tnfs.tngou.net/image" + url;  //图片完整地址
+            if (url.equals("http://tnfs.tngou.net/image/lore/default.jpg"))
+                //图片为默认图片，证明无有效图片
+                url = "";
+            else
+                url = url + "_250x200";  //改变图片大小
+            DoRequest.doImageRequest(url,viewHolder.photo);
         }
     }
 

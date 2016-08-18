@@ -14,7 +14,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title">
+            android:layout_below="@id/title"
+            android:paddingBottom="10dp">
 
             <!--标题-->
             <TextView
@@ -200,7 +201,7 @@
                 android:textColor="@color/title_green"
                 android:layout_marginLeft="@dimen/fifteen"/>
             <!--评论数-->
-            <TextView
+           <!-- <TextView
                 android:id="@+id/tv_rcount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -209,7 +210,7 @@
                 android:layout_marginBottom="@dimen/five"
                 android:layout_marginRight="@dimen/five" />
 
-            <!--收藏数-->
+            &lt;!&ndash;收藏数&ndash;&gt;
             <TextView
                 android:id="@+id/tv_fcount"
                 android:layout_width="wrap_content"
@@ -217,7 +218,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/five"
                 android:layout_marginRight="@dimen/ten"
-                android:layout_toLeftOf="@id/tv_rcount" />
+                android:layout_toLeftOf="@id/tv_rcount" />-->
         </RelativeLayout>
     </ScrollView>
 </LinearLayout>

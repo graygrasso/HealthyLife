@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +24,7 @@ import cn.sharesdk.tencent.qzone.QZone;
 
 /**
  * Created by 橘沐 on 2016/1/30.
+ * 设置
  */
 public class SettingActivity extends Activity implements View.OnClickListener {
     private TextView tv_title;
@@ -30,6 +35,19 @@ public class SettingActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        /**
+         * 2016.3.19
+         * 使设置作为弹框显示，并从底部弹出，宽度为屏幕宽度，高度为自适应
+         */
+        Window window = this.getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        WindowManager windowManager = this.getWindowManager();
+        DisplayMetrics dm = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(dm);
+        int screenWidth = dm.widthPixels;
+        WindowManager.LayoutParams params = window.getAttributes();
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        window.setLayout(screenWidth,params.height );  //设置宽高
 
         initView();
         initListener();

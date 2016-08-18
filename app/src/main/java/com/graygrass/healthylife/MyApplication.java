@@ -42,22 +42,23 @@ public class MyApplication extends Application {
      */
     public void imgOption() {
         //创建默认的ImageLoad配置参数
-        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(this);
-        //创建默认的ImageLoader配置参数
-        /*ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this)
-                .writeDebugLogs()
-                .build();*/
-
-        ImageLoader.getInstance().init(configuration);
+//        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(this);
 
 //        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context).build();
+
+        //创建默认的ImageLoader配置参数
+        ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(this)
+//                .writeDebugLogs() //打印log信息
+                .build();
+        //Initialize ImageLoader with configuration.
+        ImageLoader.getInstance().init(configuration);
     }
 
     /**
      * 极光推送相关配置
      */
     public void jPushOtion() {
-        JPushInterface.setDebugMode(true);//测试时设置为true，发布时改为false
+        JPushInterface.setDebugMode(true);//TODO 测试时设置为true，发布时改为false
         JPushInterface.init(this);
 
         //设置别名

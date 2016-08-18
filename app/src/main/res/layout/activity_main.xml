@@ -88,161 +88,172 @@
                 android:textSize="@dimen/font_l" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/layout1"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/fifty"
-            android:layout_marginTop="@dimen/twenty"
-            android:background="@color/theme_green">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/img_index"
-                android:layout_width="@dimen/img_icon"
-                android:layout_height="@dimen/img_icon"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:src="@drawable/drug" />
-
-            <TextView
-                android:id="@+id/tv_index"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:layout_toRightOf="@id/img_index"
-                android:text="首页(～￣▽￣)～"
-                android:textSize="@dimen/font_m" />
-        </RelativeLayout>
+                android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/layout2"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fifty"
-            android:layout_marginTop="@dimen/twenty">
+                <RelativeLayout
+                    android:id="@+id/layout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fifty"
+                    android:layout_marginTop="@dimen/twenty"
+                    android:background="@color/theme_green">
 
-            <ImageView
-                android:id="@+id/img_search"
-                android:layout_width="@dimen/img_icon"
-                android:layout_height="@dimen/img_icon"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:src="@drawable/search" />
+                    <ImageView
+                        android:id="@+id/img_index"
+                        android:layout_width="@dimen/img_icon"
+                        android:layout_height="@dimen/img_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:src="@drawable/drug" />
 
-            <TextView
-                android:id="@+id/tv_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:layout_marginTop="@dimen/thirty"
-                android:layout_toRightOf="@id/img_search"
-                android:text="查询(＾－＾)"
-                android:textSize="@dimen/font_m" />
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_index"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:layout_toRightOf="@id/img_index"
+                        android:text="首页(～￣▽￣)～"
+                        android:textSize="@dimen/font_m" />
+                </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/layout3"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fifty"
-            android:layout_marginTop="@dimen/twenty">
+                <RelativeLayout
+                    android:id="@+id/layout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fifty"
+                    android:layout_marginTop="@dimen/twenty">
 
-            <ImageView
-                android:id="@+id/img_food"
-                android:layout_width="@dimen/img_icon"
-                android:layout_height="@dimen/img_icon"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:src="@drawable/cup" />
+                    <ImageView
+                        android:id="@+id/img_search"
+                        android:layout_width="@dimen/img_icon"
+                        android:layout_height="@dimen/img_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:src="@drawable/search" />
 
-            <TextView
-                android:id="@+id/tv_food"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:layout_marginTop="@dimen/thirty"
-                android:layout_toRightOf="@id/img_food"
-                android:text="健康食物(≧∇≦)ﾉ"
-                android:textSize="@dimen/font_m" />
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:layout_marginTop="@dimen/thirty"
+                        android:layout_toRightOf="@id/img_search"
+                        android:text="查询(＾－＾)"
+                        android:textSize="@dimen/font_m" />
+                </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/layout4"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fifty"
-            android:layout_marginTop="@dimen/twenty">
+                <RelativeLayout
+                    android:id="@+id/layout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fifty"
+                    android:layout_marginTop="@dimen/twenty">
 
-            <ImageView
-                android:id="@+id/img_foodMenu"
-                android:layout_width="@dimen/img_icon"
-                android:layout_height="@dimen/img_icon"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:src="@drawable/book" />
+                    <ImageView
+                        android:id="@+id/img_food"
+                        android:layout_width="@dimen/img_icon"
+                        android:layout_height="@dimen/img_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:src="@drawable/cup" />
 
-            <TextView
-                android:id="@+id/tv_foodMenu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:layout_marginTop="@dimen/thirty"
-                android:layout_toRightOf="@id/img_foodMenu"
-                android:text="健康菜谱(☆▽☆)"
-                android:textSize="@dimen/font_m" />
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_food"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:layout_marginTop="@dimen/thirty"
+                        android:layout_toRightOf="@id/img_food"
+                        android:text="健康食物(≧∇≦)ﾉ"
+                        android:textSize="@dimen/font_m" />
+                </RelativeLayout>
 
-        <!--周边的医院药店-->
-        <RelativeLayout
-            android:id="@+id/layout5"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fifty"
-            android:layout_marginTop="@dimen/twenty">
+                <RelativeLayout
+                    android:id="@+id/layout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fifty"
+                    android:layout_marginTop="@dimen/twenty">
 
-            <ImageView
-                android:id="@+id/img_rim"
-                android:layout_width="@dimen/img_icon"
-                android:layout_height="@dimen/img_icon"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:src="@drawable/medkit" />
+                    <ImageView
+                        android:id="@+id/img_foodMenu"
+                        android:layout_width="@dimen/img_icon"
+                        android:layout_height="@dimen/img_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:src="@drawable/book" />
 
-            <TextView
-                android:id="@+id/tv_rim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:layout_marginTop="@dimen/thirty"
-                android:layout_toRightOf="@id/img_rim"
-                android:text="附近医院、药店"
-                android:textSize="@dimen/font_m" />
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_foodMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:layout_marginTop="@dimen/thirty"
+                        android:layout_toRightOf="@id/img_foodMenu"
+                        android:text="健康菜谱(☆▽☆)"
+                        android:textSize="@dimen/font_m" />
+                </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/layout6"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/fifty"
-            android:layout_marginTop="@dimen/twenty">
+                <!--周边的医院药店-->
+                <RelativeLayout
+                    android:id="@+id/layout5"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fifty"
+                    android:layout_marginTop="@dimen/twenty">
 
-            <ImageView
-                android:id="@+id/img_about"
-                android:layout_width="@dimen/img_icon"
-                android:layout_height="@dimen/img_icon"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:src="@drawable/mine" />
+                    <ImageView
+                        android:id="@+id/img_rim"
+                        android:layout_width="@dimen/img_icon"
+                        android:layout_height="@dimen/img_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:src="@drawable/medkit" />
 
-            <TextView
-                android:id="@+id/tv_about"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/thirty"
-                android:layout_marginTop="@dimen/thirty"
-                android:layout_toRightOf="@id/img_about"
-                android:text="我的主页(*^__^*)"
-                android:textSize="@dimen/font_m" />
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_rim"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:layout_marginTop="@dimen/thirty"
+                        android:layout_toRightOf="@id/img_rim"
+                        android:text="附近医院、药店"
+                        android:textSize="@dimen/font_m" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layout6"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fifty"
+                    android:layout_marginTop="@dimen/twenty">
+
+                    <ImageView
+                        android:id="@+id/img_about"
+                        android:layout_width="@dimen/img_icon"
+                        android:layout_height="@dimen/img_icon"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:src="@drawable/mine" />
+
+                    <TextView
+                        android:id="@+id/tv_about"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/thirty"
+                        android:layout_marginTop="@dimen/thirty"
+                        android:layout_toRightOf="@id/img_about"
+                        android:text="我的主页(*^__^*)"
+                        android:textSize="@dimen/font_m" />
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

@@ -2,7 +2,7 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tv_cookClassify"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/thirty"
+    android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:gravity="center"
     android:textSize="@dimen/font_m" />

@@ -1,11 +1,11 @@
 package com.graygrass.healthylife.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +20,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.graygrass.healthylife.activity.ItemActivity;
-import com.graygrass.healthylife.activity.MainActivity;
 import com.graygrass.healthylife.MyApplication;
 import com.graygrass.healthylife.R;
+import com.graygrass.healthylife.activity.ItemActivity;
+import com.graygrass.healthylife.activity.MainActivity;
 import com.graygrass.healthylife.adapter.ModelAdapter;
+import com.graygrass.healthylife.layout.ProgressDialogCustom;
 import com.graygrass.healthylife.model.KnowledgeModel;
 import com.graygrass.healthylife.util.Common;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -38,25 +39,29 @@ import java.util.Map;
  * Created by 橘沐 on 2015/12/16.
  * 健康知识
  */
+//todo 换成天狗的接口
 public class KnowledgeFragment extends Fragment {
     private View parentView;
     private PullToRefreshListView lv_knowledge;
-    private ProgressDialog progress;
-//    private RefreshableView refreshableView;
+    private ProgressDialogCustom progressDialog;
+    //    private RefreshableView refreshableView;
+    private boolean isFirstIn;//判断是否首此次进入
+    private ModelAdapter adapter;
 
     //分页
     private long rows;
     private List<KnowledgeModel.Tngou> knowledgeList = null;
 
-    MainActivity main = new MainActivity();
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentView = inflater.inflate(R.layout.fragment_knowledge, null, false);
-        lv_knowledge = (PullToRefreshListView) parentView.findViewById(R.id.lv_knowledge);
-        lv_knowledge.setMode(PullToRefreshBase.Mode.BOTH);
+//        if(parentView==null) {
+            parentView = inflater.inflate(R.layout.fragment_knowledge, null, false);
+            lv_knowledge = (PullToRefreshListView) parentView.findViewById(R.id.lv_knowledge);
+            lv_knowledge.setMode(PullToRefreshBase.Mode.BOTH);
 //        refreshableView = (RefreshableView) parentView.findViewById(R.id.refreshable_view);
+//        }
+        isFirstIn = true;
         return parentView;
     }
 
@@ -67,12 +72,10 @@ public class KnowledgeFragment extends Fragment {
         initListener();
 
         //判断是否有缓存内容，如果有则默认显示缓存内容
-        progress = new ProgressDialog(parentView.getContext());
         rows = 20;
         String knowledgeListString = MyApplication.mCache.getAsString("knowledgeListString");
         if (TextUtils.isEmpty(knowledgeListString)) {
-            progress.setMessage("正在加载...\n" + "请稍候");
-            progress.show();
+            startProgressDialog();
             doRequest(rows);
         } else {
             requestOperation(knowledgeListString);
@@ -109,8 +112,7 @@ public class KnowledgeFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.GET, Common.knowledgeUrl + "?classify=0&id=0&rows=" + rows, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-                if (progress != null)
-                    progress.dismiss();
+                stopProgerssDialog();
                 System.out.println("KnowledgeFragment->doRequest()返回结果》" + s);
                 if (rows == 20) {
                     MyApplication.mCache.put("knowledgeListString", s);//将网络请求回来的数据放入缓存中(只将最新数据放入缓存)
@@ -122,8 +124,7 @@ public class KnowledgeFragment extends Fragment {
             public void onErrorResponse(VolleyError volleyError) {
                 System.out.println("knowledge错误：" + volleyError.getMessage());
                 lv_knowledge.onRefreshComplete();
-                if (progress != null)
-                    progress.dismiss();
+                stopProgerssDialog();
             }
         }) {
             @Override
@@ -142,11 +143,18 @@ public class KnowledgeFragment extends Fragment {
      * @param s
      */
     private void requestOperation(String s) {
+        Log.d("json", s);
         Gson gson = new Gson();
         final KnowledgeModel k = gson.fromJson(s, KnowledgeModel.class);
         knowledgeList = k.getList();
-        ModelAdapter adapter = new ModelAdapter(knowledgeList, parentView.getContext(), "knowledge");
-        lv_knowledge.setAdapter(adapter);
+        if (isFirstIn) {
+            Log.d("isFirstIn1", isFirstIn + "");
+            adapter = new ModelAdapter(knowledgeList, parentView.getContext(), "knowledge");
+            lv_knowledge.setAdapter(adapter);
+            isFirstIn = false;
+        }
+        adapter.notifyDataSetChanged();
+        Log.d("isFirstIn2", isFirstIn + "");
         lv_knowledge.onRefreshComplete();
         lv_knowledge.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -164,4 +172,30 @@ public class KnowledgeFragment extends Fragment {
             }
         });
     }
+
+    private void startProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = ProgressDialogCustom.createDialog(parentView.getContext());
+            progressDialog.setMessage("正在加载...");
+        }
+        progressDialog.show();
+    }
+
+    private void stopProgerssDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog=null;
+        }
+    }
+
+   /* *//**
+     * 保存视图
+     *//*
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (parentView != null) {
+            ((ViewGroup)parentView.getParent()).removeView(parentView);
+        }
+    }*/
 }

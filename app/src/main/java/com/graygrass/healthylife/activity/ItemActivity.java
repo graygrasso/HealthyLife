@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -32,6 +34,7 @@ import com.graygrass.healthylife.model.IllnessModel;
 import com.graygrass.healthylife.model.KnowledgeModel;
 import com.graygrass.healthylife.model.SearchAllModel;
 import com.graygrass.healthylife.util.Common;
+import com.graygrass.healthylife.util.DoRequest;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -46,12 +49,12 @@ import java.util.Map;
  * 显示列表条目listView item的具体信息
  */
 public class ItemActivity extends Activity implements View.OnClickListener {
-    private TextView tv_titleDetail, tv_keywords, tv_countDetail, tv_contentDetail, tv_descriptionDetail, tv_rcount, tv_fcount;
+    private TextView tv_titleDetail, tv_keywords, tv_countDetail, tv_contentDetail, tv_descriptionDetail;
     private ImageView img_itemDetail;
     private ImageButton img_back;
     private ListView lv_book_content;
     private Button btn_showMap;
-    private String title, content, keywords, imgUrl, count, description, rcount, fcount;
+    private String title, content, keywords, imgUrl, count, description;
     private String kind;//要显示具体信息的类型（knowledge、drugShow...）
     private double x, y;//用于显示地图所需的经纬度
     private String address;//药店或医院地址
@@ -114,8 +117,6 @@ public class ItemActivity extends Activity implements View.OnClickListener {
         tv_contentDetail = (TextView) findViewById(R.id.tv_contentDetail);
         tv_keywords = (TextView) findViewById(R.id.tv_keywords);
         tv_descriptionDetail = (TextView) findViewById(R.id.tv_descriptionDetail);
-        tv_rcount = (TextView) findViewById(R.id.tv_rcount);
-        tv_fcount = (TextView) findViewById(R.id.tv_fcount);
         lv_book_content = (ListView) findViewById(R.id.lv_book_content);
         btn_showMap = (Button) findViewById(R.id.btn_showMap);
 
@@ -153,8 +154,6 @@ public class ItemActivity extends Activity implements View.OnClickListener {
         tv_keywords.setText(keywords);
         tv_countDetail.setText(count);
         tv_contentDetail.setText(content);
-        tv_rcount.setText(rcount);
-        tv_fcount.setText(fcount);
         imageRequest(imgUrl);
 
     }
@@ -170,17 +169,7 @@ public class ItemActivity extends Activity implements View.OnClickListener {
             if (!url.contains("http://tnfs.tngou.net/img"))
                 //原链接完整则不添加,反之添加
                 url = "http://tnfs.tngou.net/image" + url;
-            final DisplayImageOptions options = new DisplayImageOptions.Builder()
-                    .cacheInMemory(true)
-                    .cacheOnDisk(true)
-                    .build();
-            ImageLoader.getInstance().loadImage(url, options, new SimpleImageLoadingListener() {
-                @Override
-                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    super.onLoadingComplete(imageUri, view, loadedImage);
-                    img_itemDetail.setImageBitmap(loadedImage);
-                }
-            });
+            DoRequest.doImageRequest(url, img_itemDetail);
         }
     }
 
@@ -190,17 +179,17 @@ public class ItemActivity extends Activity implements View.OnClickListener {
     private void initKnowledgeData() {
         Bundle bundle = getIntent().getExtras();
         KnowledgeModel.Tngou k = (KnowledgeModel.Tngou) bundle.getSerializable("knowledgeList");
-        title = k.getTitle();
-        description = "描述： " + k.getDescription();
-        count = "浏览量： " + k.getCount() + "";
-        content = Html.fromHtml(k.getMessage()).toString();
-        keywords = "关键词： " + k.getKeywords();
-        rcount = "评论数：" + k.getRcount() + "";
-        fcount = "收藏数：" + k.getFcount() + "";
-        imgUrl = k.getImg();
-        if (imgUrl.equals("/lore/default.jpg"))
-            //图片为默认图片，证明无有效图片
-            imgUrl = "";
+        if(k!=null) {
+            title = k.getTitle();
+            description = "描述： " + k.getDescription();
+            count = "浏览量： " + k.getCount() + "";
+            content = Html.fromHtml(k.getMessage()).toString();
+            keywords = "关键词： " + k.getKeywords();
+            imgUrl = k.getImg();
+            if (imgUrl.equals("/lore/default.jpg"))
+                //图片为默认图片，证明无有效图片
+                imgUrl = "";
+        }
     }
 
     /**
@@ -224,8 +213,6 @@ public class ItemActivity extends Activity implements View.OnClickListener {
                         description = "描述： " + ds.getDescription();
                         imgUrl = ds.getImg();
                         content = Html.fromHtml(ds.getMessage()).toString();
-                        rcount = "评论数：" + "0";
-                        fcount = "收藏数：" + ds.getFcount();
                         putToText();
                     }
                 }, new Response.ErrorListener() {
@@ -257,8 +244,6 @@ public class ItemActivity extends Activity implements View.OnClickListener {
                         count = "浏览量： " + bs.getCount();
                         description = "";
                         imgUrl = bs.getImg();
-                        rcount = "评论数：" + "0";
-                        fcount = "收藏数：" + bs.getFcount();
                         content = "";
                         List<BookShowModel.T> list = bs.getList();
                         List<Map<String, String>> simlist = new ArrayList<>();
@@ -288,110 +273,117 @@ public class ItemActivity extends Activity implements View.OnClickListener {
     private void initIllnessData() {
         Bundle bundle = getIntent().getExtras();
         IllnessModel.Illness ill = (IllnessModel.Illness) bundle.getSerializable("illness");
-        title = ill.getName();
-        description = "描述： " + ill.getDescription();
-        count = "浏览量： " + ill.getCount();
-        content = "";
-        keywords = "关键词： " + ill.getKeywords();
-        rcount = "评论数： " + ill.getRcount();
-        fcount = "收藏数：" + ill.getFcount();
-        imgUrl = ill.getImg();
+        if (ill != null) {
+            title = ill.getName();
+            description = "描述： " + ill.getDescription();
+            count = "浏览量： " + ill.getCount();
+            content = "";
+            keywords = "关键词： " + ill.getKeywords();
+            imgUrl = ill.getImg();
        /* if (imgUrl.equals("/lore/default.jpg"))
             //图片为默认图片，证明无有效图片
             imgUrl = "";*/
 
-        //设置linear_illness可见
-        linear_illness.setVisibility(View.VISIBLE);
-        btns[0].setText("病症描述 ▲");
-        tvs[0].setText(Html.fromHtml(ill.getSymptomtext()).toString());
-        btns[1].setText("用药说明 ▲");
-        tvs[1].setText(Html.fromHtml(ill.getDrugtext()).toString());
-        btns[2].setText("病因 ▲");
-        tvs[2].setText(Html.fromHtml(ill.getCausetext()).toString());
-        btns[3].setText("预防护理 ▲");
-        tvs[3].setText(Html.fromHtml(ill.getCaretext()).toString());
-        btns[4].setText("检测说明 ▲");
-        tvs[4].setText(Html.fromHtml(ill.getChecktext()).toString());
-        btns[5].setText("健康保健 ▲");
-        tvs[5].setText(Html.fromHtml(ill.getFoodtext()).toString());
+            //设置linear_illness可见
+            linear_illness.setVisibility(View.VISIBLE);
+            btns[0].setText("病症描述 ▲");
+            tvs[0].setText(Html.fromHtml(ill.getSymptomtext()).toString());
+            btns[1].setText("用药说明 ▲");
+            tvs[1].setText(Html.fromHtml(ill.getDrugtext()).toString());
+            btns[2].setText("病因 ▲");
+            tvs[2].setText(Html.fromHtml(ill.getCausetext()).toString());
+            btns[3].setText("预防护理 ▲");
+            tvs[3].setText(Html.fromHtml(ill.getCaretext()).toString());
+            btns[4].setText("检测说明 ▲");
+            tvs[4].setText(Html.fromHtml(ill.getChecktext()).toString());
+            btns[5].setText("健康保健 ▲");
+            tvs[5].setText(Html.fromHtml(ill.getFoodtext()).toString());
+        }
     }
 
 
     private void initSearchAllData() {
         Bundle bundle = getIntent().getExtras();
         SearchAllModel.Tngou searchAll = (SearchAllModel.Tngou) bundle.getSerializable("searchAll");
-        title = searchAll.getTitle();
-        description = "描述： " + searchAll.getDescription();
-        count = "";
-        content = searchAll.getMessage();
-        keywords = "关键词： " + searchAll.getKeywords();
-        rcount = "";
-        fcount = "";
-        imgUrl = searchAll.getImg();//查询返回的地址是完整的
+        if (searchAll != null) {
+            title = searchAll.getTitle();
+            description = "描述： " + searchAll.getDescription();
+            count = "";
+            content = Html.fromHtml(searchAll.getMessage()).toString();
+            keywords = "关键词： " + searchAll.getKeywords();
+            imgUrl = searchAll.getImg();//查询返回的地址是完整的
+        }
     }
 
     private void initFoodShowData() {
         Bundle bundle = getIntent().getExtras();
         FoodShowModel f = (FoodShowModel) bundle.getSerializable("foodShow");
-        title = f.getName();
-        description = "描述：" + f.getDescription();
-        count = "浏览量：" + f.getCount();
-        content = Html.fromHtml(f.getMessage()).toString();
-        keywords = "关键词：" + f.getKeywords();
-        rcount = "评论数：" + f.getRcount();
-        fcount = "收藏数：" + f.getFcount();
-        imgUrl = f.getImg();
+        if (f != null) {
+            title = f.getName();
+            description = "描述：" + f.getDescription();
+            count = "浏览量：" + f.getCount();
+            if (TextUtils.isEmpty(f.getMessage())) {
+                content = "";
+            } else {
+                content = Html.fromHtml(f.getMessage()).toString();
+            }
+            keywords = "关键词：" + f.getKeywords();
+            imgUrl = f.getImg();
+        }
     }
 
     private void initCookShowData() {
         Bundle bundle = getIntent().getExtras();
         CookShowModel f = (CookShowModel) bundle.getSerializable("cookShow");
-        title = f.getName();
-        description = "描述：" + f.getDescription();
-        count = "浏览量：" + f.getCount();
-        content = Html.fromHtml(f.getMessage()).toString();
-        keywords = "关键词：" + f.getKeywords();
-        rcount = "评论数：" + f.getRcount();
-        fcount = "收藏数：" + f.getFcount();
-        imgUrl = f.getImg();
+        if (f != null) {
+            title = f.getName();
+            description = "描述：" + f.getDescription();
+            count = "浏览量：" + f.getCount();
+            if (TextUtils.isEmpty(f.getMessage()))
+                content = "";
+            else
+                content = Html.fromHtml(f.getMessage()).toString();
+            keywords = "关键词：" + f.getKeywords();
+            imgUrl = f.getImg();
+        }
     }
 
     private void initDrugStoreShow() {
         Bundle bundle = getIntent().getExtras();
         DrugStoreListModel.Tngou d = (DrugStoreListModel.Tngou) bundle.getSerializable("drugStore");
-        title = d.getName();
-        keywords = "类型： " + d.getType();
-        description = "地址： " + d.getAddress();
-        count = "浏览量：" + d.getCount();
-        content = "经营范围： " + d.getBusiness();
-        rcount = "评论数：" + d.getRcount();
-        fcount = "收藏数：" + d.getFcount();
-        btn_showMap.setVisibility(View.VISIBLE);
-        x = d.getX();
-        y = d.getY();
-        address = d.getAddress();
-        imgUrl = d.getImg();
-        if(imgUrl.equals("/store/default.jpg"))
-            imgUrl = "";
+        if (d != null) {
+            title = d.getName();
+            keywords = "类型： " + d.getType();
+            description = "地址： " + d.getAddress();
+            count = "浏览量：" + d.getCount();
+            content = "经营范围： " + d.getBusiness();
+            btn_showMap.setVisibility(View.VISIBLE);
+            x = d.getX();
+            y = d.getY();
+            address = d.getAddress();
+            imgUrl = d.getImg();
+            if (imgUrl.equals("/store/default.jpg"))
+                imgUrl = "";
+        }
     }
 
     private void initHospitalShow() {
         Bundle bundle = getIntent().getExtras();
         HospitalLocationModel.Tngou d = (HospitalLocationModel.Tngou) bundle.getSerializable("hospital");
-        title = d.getName();
-        keywords = "等级： " + d.getLevel();
-        description = "地址： " + d.getAddress();
-        count = "浏览量：" + d.getCount();
-        content = "联系电话： " + d.getTel();
-        rcount = "评论数：" + d.getRcount();
-        fcount = "收藏数：" + d.getFcount();
-        btn_showMap.setVisibility(View.VISIBLE);
-        x = d.getX(); //获取经度
-        y = d.getY(); //获取纬度
-        address = d.getAddress();
-        imgUrl = d.getImg();
-        if(imgUrl.equals("/hospital/default.jpg"))
-            imgUrl = "";
+        if (d != null) {
+            title = d.getName();
+            keywords = "等级： " + d.getLevel();
+            description = "地址： " + d.getAddress();
+            count = "浏览量：" + d.getCount();
+            content = "联系电话： " + d.getTel();
+            btn_showMap.setVisibility(View.VISIBLE);
+            x = d.getX(); //获取经度
+            y = d.getY(); //获取纬度
+            address = d.getAddress();
+            imgUrl = d.getImg();
+            if (imgUrl.equals("/hospital/default.jpg"))
+                imgUrl = "";
+        }
     }
 
     @Override
@@ -404,12 +396,9 @@ public class ItemActivity extends Activity implements View.OnClickListener {
             mapIntent.putExtra("x", x);
             mapIntent.putExtra("y", y);
             mapIntent.putExtra("address", address);
+            mapIntent.putExtra("name", title);//医院、药店名称
             startActivity(mapIntent);
         } else {
-            //先将所有TextView设为不可见，即折叠
-            /*for (int i = 0; i < num; i++) {
-                tvs[i].setVisibility(View.GONE);
-            }*/
             //点击某一按钮时改变
             for (int i = 0; i < num; i++) {
                 //被点击的按钮对应textView显示

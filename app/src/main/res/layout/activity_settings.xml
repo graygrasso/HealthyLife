@@ -9,9 +9,10 @@
     <RelativeLayout
         android:id="@+id/layout_clear"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/thirty"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/fifteen"
-        android:background="@drawable/layout_color">
+        android:background="@drawable/layout_color"
+        android:padding="@dimen/ten">
 
         <TextView
             android:layout_width="match_parent"
@@ -31,9 +32,10 @@
     <RelativeLayout
         android:id="@+id/layout_exitLogin"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/thirty"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/fifteen"
-        android:background="@drawable/layout_color">
+        android:background="@drawable/layout_color"
+        android:padding="@dimen/ten">
 
         <TextView
             android:layout_width="match_parent"

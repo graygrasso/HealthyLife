@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include layout="@layout/title_back"/>
+    <include layout="@layout/title_back" />
 
     <include layout="@layout/title_classify" />
 
     <com.handmark.pulltorefresh.library.PullToRefreshGridView
-        android:id="@+id/photo_wall"
+        android:id="@+id/gridView_cook"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/ten"
+        android:layout_height="match_parent"
+        android:padding="@dimen/ten"
         android:columnWidth="100dip"
         android:gravity="center"
         android:horizontalSpacing="@dimen/ten"

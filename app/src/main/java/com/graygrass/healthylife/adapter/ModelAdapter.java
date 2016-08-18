@@ -18,6 +18,7 @@ import com.graygrass.healthylife.model.FoodListModel;
 import com.graygrass.healthylife.model.HospitalLocationModel;
 import com.graygrass.healthylife.model.IllnessModel;
 import com.graygrass.healthylife.model.KnowledgeModel;
+import com.graygrass.healthylife.util.DoRequest;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -126,7 +127,7 @@ public class ModelAdapter extends BaseAdapter {
         viewHolder.tv_content.setText(Html.fromHtml(description));
         viewHolder.tv_count.setText("浏览量：" + count);
         //加载图片
-        doImageRequest(url, viewHolder, position);
+        doImageRequest(url, viewHolder);
         return convertView;
     }
 
@@ -140,9 +141,8 @@ public class ModelAdapter extends BaseAdapter {
      *
      * @param url
      * @param viewHolder
-     * @param position
      */
-    private void doImageRequest(String url, ViewHolder viewHolder, int position) {
+    private void doImageRequest(String url, ViewHolder viewHolder) {
         if (url != null && !url.equals("")) {
             //有图片
             url = "http://tnfs.tngou.net/image" + url;  //图片完整地址
@@ -151,18 +151,7 @@ public class ModelAdapter extends BaseAdapter {
                 url = "";
             else
                 url = url + "_250x200";  //改变图片大小
-            final DisplayImageOptions options = new DisplayImageOptions.Builder()
-                    .cacheInMemory(true)
-                    .cacheOnDisk(true)
-                    .build();
-            final ViewHolder finalViewHolder = viewHolder;
-            ImageLoader.getInstance().loadImage(url, options, new SimpleImageLoadingListener() {
-                @Override
-                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    super.onLoadingComplete(imageUri, view, loadedImage);
-                    finalViewHolder.img_item.setImageBitmap(loadedImage);
-                }
-            });
+            DoRequest.doImageRequest(url,viewHolder.img_item);
         }
     }
 }

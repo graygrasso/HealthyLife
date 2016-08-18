@@ -16,10 +16,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/five"
         android:layout_marginRight="@dimen/five"
-        android:layout_toRightOf="@id/img_item"
         android:layout_marginTop="@dimen/five"
+        android:layout_toRightOf="@id/img_item"
         android:text="标题"
-        android:textSize="@dimen/font_l"
+        android:textSize="@dimen/font_m"
         android:textStyle="bold" />
 
     <TextView
@@ -31,6 +31,7 @@
         android:layout_marginRight="@dimen/five"
         android:layout_marginTop="@dimen/five"
         android:layout_toRightOf="@id/img_item"
+        android:maxLines="4"
         android:text="描述" />
 
     <TextView

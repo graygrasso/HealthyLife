@@ -208,8 +208,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/twenty"
-            android:background="@drawable/personal_set_ic" />
+            android:layout_marginLeft="@dimen/twenty_two"
+            android:background="@drawable/mine_about" />
         <!--文字-->
         <TextView
             android:layout_width="wrap_content"

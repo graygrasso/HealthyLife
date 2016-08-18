@@ -1,9 +1,7 @@
 package com.graygrass.healthylife.fragment;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,11 +24,16 @@ import com.graygrass.healthylife.activity.MainActivity;
 import com.graygrass.healthylife.activity.SettingActivity;
 import com.graygrass.healthylife.util.DoRequest;
 
+import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qzone.QZone;
+import cn.sharesdk.wechat.friends.Wechat;
 
 /**
  * Created by 橘沐 on 2015/12/28.
+ * 我的主页
  */
 public class MineFragment extends Fragment implements View.OnClickListener {
     private View view;
@@ -80,7 +83,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         //判断用户是否登录 如果已经退出登录，则恢复初始状态
         isUserLogin();
 
-        getView().setFocusableInTouchMode(true);
+        /*getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -94,9 +97,9 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 }
                 return false;
             }
-        });
+        });*/
     }
-
+    //todo 分享什么！
     private void showShare() {
         ShareSDK.initSDK(view.getContext());
         OnekeyShare oks = new OnekeyShare();
@@ -105,21 +108,29 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         // 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
         //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
         // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
-        oks.setTitle("测试");
+        oks.setTitle("健康生活");
         // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
-        oks.setTitleUrl("http://www.baidu.com");
+//        oks.setTitleUrl("http://www.tngou.net/disease/show/25");
         // text是分享文本，所有平台都需要这个字段
-        oks.setText("分享测试");
+        oks.setText("这是我的分享~大家都来看看吧");
         // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
-//        oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        oks.setImagePath("/mnt/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        /*Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+
+                + r.getResourcePackageName(R.drawable.图片名称) + "/"
+
+                + r.getResourceTypeName(R.drawable.图片名称) + "/"
+
+                + r.getResourceEntryName(R.drawable.图片名称));
+        */
         // url仅在微信（包括好友和朋友圈）中使用
-        oks.setUrl("http://www.baidu.com");
+        oks.setUrl("http://www.tngou.net/disease/show/25");
         // comment是我对这条分享的评论，仅在人人网和QQ空间使用
 //        oks.setComment("我是测试评论文本");
         // site是分享此内容的网站名称，仅在QQ空间使用
         oks.setSite(getString(R.string.app_name));
         // siteUrl是分享此内容的网站地址，仅在QQ空间使用
-        oks.setSiteUrl("http://www.baidu.com");
+        oks.setSiteUrl("http://www.tngou.net/disease/show/25");
         // 启动分享GUI
         oks.show(view.getContext());
     }
@@ -132,6 +143,9 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.layout_share:
                 showShare();
+//                wxShare();
+//                wbShare();
+//                QQShare();
                 break;
             case R.id.layout_settings:
                 Intent intent = new Intent(view.getContext(), SettingActivity.class);
@@ -157,6 +171,44 @@ public class MineFragment extends Fragment implements View.OnClickListener {
             tv_sign.setText(uDes);
             DoRequest.doImageRequest(uImage, img_user);
         }
+    }
+
+    public void wxShare() {
+        //微信分享
+        Wechat.ShareParams wxSp = new Wechat.ShareParams();
+        wxSp.setTitle("title");
+        wxSp.setText("text");
+        wxSp.setImageUrl("http://d.hiphotos.baidu.com/zhidao/wh%3D600%2C800/sign=eb3895228218367aaddc77db1e43a7ec/c9fcc3cec3fdfc03c92cbbb3d03f8794a4c22660.jpg");
+        wxSp.setUrl("http://www.tngou.net/disease/show/25");
+        wxSp.setShareType(Platform.SHARE_WEBPAGE);
+        Platform wx = ShareSDK.getPlatform(Wechat.NAME);
+//        Platform wxC = ShareSDK.getPlatform(WechatMoments.NAME);
+        wx.share(wxSp);
+    }
+
+    public void wbShare() {
+        SinaWeibo.ShareParams sp = new SinaWeibo.ShareParams();
+        sp.setText("文本");
+        sp.setImagePath("/mnt/sdcard/test.jpg");
+        Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+//        weibo.setPlatformActionListener(paListener); // 设置分享事件回调
+// 执行图文分享
+        weibo.share(sp);
+    }
+
+    public void QQShare() {
+        QZone.ShareParams sp = new QZone.ShareParams();
+        sp.setTitle("测试分享的标题");
+        sp.setTitleUrl("http://sharesdk.cn"); // 标题的超链接
+        sp.setText("测试分享的文本");
+        sp.setImageUrl("http://www.someserver.com/测试图片网络地址.jpg");
+        sp.setSite("发布分享的网站名称");
+        sp.setSiteUrl("发布分享网站的地址");
+
+        Platform qzone = ShareSDK.getPlatform (QZone.NAME);
+//        qzone. setPlatformActionListener (paListener); // 设置分享事件回调
+// 执行图文分享
+        qzone.share(sp);
     }
 
 }

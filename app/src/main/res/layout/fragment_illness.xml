@@ -12,22 +12,20 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.3"
-            android:layout_marginLeft="@dimen/five"
             android:popupBackground="@android:color/white"
             />
         <Spinner
-            android:id="@+id/sp1"
+            android:id="@+id/sp_classify"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="@dimen/five"
+            android:layout_weight="1.2"
             android:popupBackground="@android:color/white"
             />
         <Spinner
-            android:id="@+id/sp2"
+            android:id="@+id/sp_detail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.0"
             android:popupBackground="@android:color/white"
             />
     </LinearLayout>

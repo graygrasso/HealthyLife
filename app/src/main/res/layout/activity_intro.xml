@@ -50,7 +50,7 @@
         android:id="@+id/btn_enter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#00000000"
+        android:background="@android:color/transparent"
         android:text="点击进入应用"
         android:visibility="gone"
         android:textColor="#FFF"

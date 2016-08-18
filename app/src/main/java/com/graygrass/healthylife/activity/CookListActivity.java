@@ -15,6 +15,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.graygrass.healthylife.R;
 import com.graygrass.healthylife.adapter.ImageWallAdapter;
+import com.graygrass.healthylife.layout.ProgressDialogCustom;
 import com.graygrass.healthylife.model.CookListModel;
 import com.graygrass.healthylife.model.CookShowModel;
 import com.graygrass.healthylife.util.Common;
@@ -34,12 +35,13 @@ public class CookListActivity extends Activity {
     private PullToRefreshGridView photo_wall;
     private String type;
     private ImageButton img_back;
-    private ProgressDialog progressDialog;
+    private ProgressDialogCustom progressDialog;
 
     //用于分页
-    private int page;
+    private int page = 1;
     private int cookListId;
     private List<CookListModel.Tngou> cookList = null;
+    private ImageWallAdapter imageWallAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,20 +49,19 @@ public class CookListActivity extends Activity {
         setContentView(R.layout.activity_cooklist);
 
         img_back = (ImageButton) findViewById(R.id.img_back);
-        photo_wall = (PullToRefreshGridView) findViewById(R.id.photo_wall);
+        photo_wall = (PullToRefreshGridView) findViewById(R.id.gridView_cook);
         tv_classify_title = (TextView) findViewById(R.id.tv_classify_title);
 
-        photo_wall.setMode(PullToRefreshBase.Mode.BOTH);
+        photo_wall.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         tv_classify_title.setText("健康菜谱——" + getIntent().getStringExtra("name"));
 
         initListener();
-
-        progressDialog = new ProgressDialog(CookListActivity.this);
-        progressDialog.show();
+//        progressDialog = new ProgressDialog(CookListActivity.this);
+//        progressDialog.show();
         type = "cookList";
         cookListId = getIntent().getIntExtra("id", 0);//要显示列表的id
-        DoRequest.doRequest(this, true, Common.cookListUrl + "?id=" + cookListId + "&page=1&rows=42", listener, errListener);
-
+        startProgressDialog();
+        DoRequest.doRequest(this, true, Common.cookListUrl + "?id=" + cookListId + "&page=1&rows=36", listener, errListener);
     }
 
     private void initListener() {
@@ -88,19 +89,13 @@ public class CookListActivity extends Activity {
                     cookShow(gson, s);
             }
         };
-        //上下拉
-        photo_wall.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<GridView>() {
+        //上拉加载更多
+        photo_wall.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<GridView>() {
             @Override
-            public void onPullDownToRefresh(PullToRefreshBase<GridView> refreshView) {
-                page = 1;
-                cookList = null;
-                DoRequest.doRequest(CookListActivity.this, true, Common.cookListUrl + "?id=" + cookListId + "&page=" + page + "&rows=42", listener, errListener);
-            }
-
-            @Override
-            public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
+            public void onRefresh(PullToRefreshBase<GridView> refreshView) {
+                type = "cookList";
                 page = ++page;
-                DoRequest.doRequest(CookListActivity.this, true, Common.cookListUrl + "?id=" + cookListId + "&page=" + page + "&rows=42", listener, errListener);
+                DoRequest.doRequest(CookListActivity.this, true, Common.cookListUrl + "?id=" + cookListId + "&page=" + page + "&rows=36", listener, errListener);
             }
         });
     }
@@ -108,29 +103,25 @@ public class CookListActivity extends Activity {
     /**
      * 请求回来将其显示到GridView 的监听
      *
-     * @param gson
+     * @param gson Gson对象
      * @param s    json数据
      */
     private void cookList(Gson gson, String s) {
-        System.out.println("cookList 返回：  %%%%%%%%%%%%%%%%%%%"+s);
         final CookListModel food = gson.fromJson(s, CookListModel.class);
-        if (cookList == null || page == 1)
+        if (cookList == null || page == 1) {
             cookList = food.getTngou();
-        else
+            imageWallAdapter = new ImageWallAdapter(cookList, this, "cook");
+            photo_wall.setAdapter(imageWallAdapter);
+        } else {
             cookList.addAll(food.getTngou());
-               /* List<String> imgList = new ArrayList<>();
-                for(int i=0;i<list.size();i++) {
-                    imgList.add(list.get(i).getImg());
-                }*/
-//                PhotoWallAdapter adapter = new PhotoWallAdapter(view.getContext(), 0, photo_wall, imgList);
-        ImageWallAdapter adapter = new ImageWallAdapter(cookList, this, "cook");
-        photo_wall.setAdapter(adapter);
-        progressDialog.dismiss();
+            imageWallAdapter.notifyDataSetChanged();
+        }
+        stopProgerssDialog();
         photo_wall.onRefreshComplete();
         photo_wall.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                long cookId = food.getTngou().get(position).getId();
+                long cookId = cookList.get(position).getId();
                 type = "cookShow";
                 DoRequest.doRequest(view.getContext(), true, Common.cookShowUrl + "?id=" + cookId, listener, errListener);
             }
@@ -147,4 +138,18 @@ public class CookListActivity extends Activity {
         startActivity(intent);
     }
 
+    private void startProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = ProgressDialogCustom.createDialog(this);
+            progressDialog.setMessage("正在加载...");
+        }
+        progressDialog.show();
+    }
+
+    private void stopProgerssDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog=null;
+        }
+    }
 }

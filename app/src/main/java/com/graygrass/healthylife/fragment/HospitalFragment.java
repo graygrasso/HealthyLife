@@ -23,10 +23,11 @@ import com.amap.api.location.AMapLocationListener;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
+import com.graygrass.healthylife.R;
 import com.graygrass.healthylife.activity.ItemActivity;
 import com.graygrass.healthylife.activity.MainActivity;
-import com.graygrass.healthylife.R;
 import com.graygrass.healthylife.adapter.ModelAdapter;
+import com.graygrass.healthylife.layout.ProgressDialogCustom;
 import com.graygrass.healthylife.model.DrugStoreListModel;
 import com.graygrass.healthylife.model.HospitalLocationModel;
 import com.graygrass.healthylife.util.Common;
@@ -46,12 +47,14 @@ public class HospitalFragment extends Fragment implements View.OnClickListener {
     private Response.Listener<String> listener;
     private Response.ErrorListener errListener;
     private PullToRefreshListView lv_hospital;
+    private ProgressDialogCustom progressDialog;
 
     //用于分页
-    private int page=1;
+    private int page = 1;
     private List<HospitalLocationModel.Tngou> hospitalList = null;
     private List<DrugStoreListModel.Tngou> drugStoreList = null;
     private static String flag = "hospital";//标识符:查询的是哪个（主要关乎listener中方法的调用）
+    private ModelAdapter modelAdapter;
 
     private Gson gson;
 
@@ -78,6 +81,7 @@ public class HospitalFragment extends Fragment implements View.OnClickListener {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         gson = new Gson();
+        startProgressDialog();
         location();
         locationOption();
         initListener();
@@ -117,11 +121,11 @@ public class HospitalFragment extends Fragment implements View.OnClickListener {
         lv_hospital.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ListView>() {
             @Override
             public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-                page=1;
+                page = 1;
                 if (flag.equals("drugStore"))
-                    DoRequest.doRequest(view.getContext(), true, Common.drugStoreLocation + "?page"+page+"&rows=20&x=" + x + "&y=" + y, listener, errListener);
+                    DoRequest.doRequest(view.getContext(), true, Common.drugStoreLocation + "?page" + page + "&rows=20&x=" + x + "&y=" + y, listener, errListener);
                 else if (flag.equals("hospital"))
-                    DoRequest.doRequest(view.getContext(), true, Common.hospitalLocation + "?page"+page+"&rows=20&x=" + x + "&y=" + y, listener, errListener);
+                    DoRequest.doRequest(view.getContext(), true, Common.hospitalLocation + "?page" + page + "&rows=20&x=" + x + "&y=" + y, listener, errListener);
             }
 
             @Override
@@ -148,6 +152,7 @@ public class HospitalFragment extends Fragment implements View.OnClickListener {
                         System.out.println("定位到了:" + aMapLocation.toString());
                         Log.d("tag", aMapLocation.getLatitude() + "纬度：");
                         Log.d("tag", aMapLocation.getLongitude() + "经度：");
+                        stopProgerssDialog();
                         tv_myLocation.setText(aMapLocation.getAddress());
 //                        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(aMapLocation, 20));
                         //定位成功回调信息，设置相关消息
@@ -194,21 +199,22 @@ public class HospitalFragment extends Fragment implements View.OnClickListener {
 
     private void drugStore(String s) {
         final DrugStoreListModel ds = gson.fromJson(s, DrugStoreListModel.class);
-        if (drugStoreList == null || page == 1)
+        if (drugStoreList == null || page == 1) {
             drugStoreList = ds.getTngou();
-        else
+            modelAdapter = new ModelAdapter(drugStoreList, view.getContext(), "drugStore");
+            lv_hospital.setAdapter(modelAdapter);
+        } else {
             drugStoreList.addAll(ds.getTngou());
-        ModelAdapter adapter = new ModelAdapter(drugStoreList, view.getContext(), "drugStore");
-        lv_hospital.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+            modelAdapter.notifyDataSetChanged();
+        }
         lv_hospital.onRefreshComplete();
         lv_hospital.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(flag.equals("drugStore")) {
+                if (flag.equals("drugStore")) {
                     Intent intent = new Intent(view.getContext(), ItemActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("drugStore", ds.getTngou().get(position - 1));
+                    bundle.putSerializable("drugStore", drugStoreList.get(position - 1));
                     intent.putExtras(bundle);
                     intent.putExtra("kind", "drugStoreShow");
                     startActivity(intent);
@@ -219,13 +225,14 @@ public class HospitalFragment extends Fragment implements View.OnClickListener {
 
     private void hospital(String s) {
         final HospitalLocationModel ds = gson.fromJson(s, HospitalLocationModel.class);
-        if (hospitalList == null || page == 1)
+        if (hospitalList == null || page == 1) {
             hospitalList = ds.getTngou();
-        else
+            modelAdapter = new ModelAdapter(hospitalList, view.getContext(), "hospital");
+            lv_hospital.setAdapter(modelAdapter);
+        } else {
             hospitalList.addAll(ds.getTngou());
-        ModelAdapter adapter = new ModelAdapter(hospitalList, view.getContext(), "hospital");
-        lv_hospital.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+            modelAdapter.notifyDataSetChanged();
+        }
         lv_hospital.onRefreshComplete();
         lv_hospital.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -233,7 +240,7 @@ public class HospitalFragment extends Fragment implements View.OnClickListener {
                 if (flag.equals("hospital")) {
                     Intent intent = new Intent(view.getContext(), ItemActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("hospital", ds.getTngou().get(position - 1));
+                    bundle.putSerializable("hospital", hospitalList.get(position - 1));
                     intent.putExtras(bundle);
                     intent.putExtra("kind", "hospitalShow");
                     startActivity(intent);
@@ -245,7 +252,7 @@ public class HospitalFragment extends Fragment implements View.OnClickListener {
     /**
      * 当在其他的fragment时点击返回键退回HealthFragment(标记为“healthFragment”)
      */
-    @Override
+   /* @Override
     public void onResume() {
         super.onResume();
 
@@ -265,7 +272,7 @@ public class HospitalFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
+*/
     @Override
     public void onClick(View v) {
         Log.d("tag", y + "y纬度：");
@@ -274,15 +281,30 @@ public class HospitalFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_showHospital:
                 btn_hospital.setBackgroundColor(getResources().getColor(R.color.title_green));
                 btn_drugStore.setBackgroundColor(getResources().getColor(R.color.white));
-                flag="hospital";
+                flag = "hospital";
                 DoRequest.doRequest(view.getContext(), true, Common.hospitalLocation + "?page=" + page + "&rows=20&x=" + x + "&y=" + y, listener, errListener);
                 break;
             case R.id.btn_showDrugStore:
                 btn_drugStore.setBackgroundColor(getResources().getColor(R.color.title_green));
                 btn_hospital.setBackgroundColor(getResources().getColor(R.color.white));
                 flag = "drugStore";
-                 DoRequest.doRequest(view.getContext(), true, Common.drugStoreLocation + "?page="+page + "&rows=20&x=" + x + "&y=" + y, listener, errListener);
+                DoRequest.doRequest(view.getContext(), true, Common.drugStoreLocation + "?page=" + page + "&rows=20&x=" + x + "&y=" + y, listener, errListener);
                 break;
+        }
+    }
+
+    private void startProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = ProgressDialogCustom.createDialog(view.getContext());
+            progressDialog.setMessage("正在定位...");
+        }
+        progressDialog.show();
+    }
+
+    private void stopProgerssDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog=null;
         }
     }
 }

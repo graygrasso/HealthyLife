@@ -1,13 +1,10 @@
 package com.graygrass.healthylife.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +22,9 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.graygrass.healthylife.activity.ItemActivity;
-import com.graygrass.healthylife.activity.MainActivity;
 import com.graygrass.healthylife.R;
+import com.graygrass.healthylife.activity.ItemActivity;
+import com.graygrass.healthylife.layout.ProgressDialogCustom;
 import com.graygrass.healthylife.model.SearchAllModel;
 import com.graygrass.healthylife.util.Common;
 import com.graygrass.healthylife.util.DoRequest;
@@ -51,12 +48,15 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Te
     private TextView tv_classify_title;
     private Response.Listener<String> listener;
     private Response.ErrorListener errListener;
-    private static ProgressDialog progressDialog;
+    private static ProgressDialogCustom progressDialog;
+    private FragmentManager manager;
 
     //分页
     private List<SearchAllModel.Tngou> searchList;
     private int page;
     private String keyword;
+    private SimpleAdapter adapter;
+    ArrayList<HashMap<String, String>> titles;
 
     @Nullable
     @Override
@@ -75,6 +75,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Te
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        manager = getActivity().getSupportFragmentManager();
+        titles = new ArrayList<>();
         initListener();
     }
 
@@ -104,8 +106,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Te
         lv_search.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                page=++page;
-                DoRequest.doRequest(view.getContext(), true, Common.searchUrl + "?keyword=" + URLEncoder.encode(keyword) + "&page="+page+"&rows=40", listener, errListener);
+                page = ++page;
+                DoRequest.doRequest(view.getContext(), true, Common.searchUrl + "?keyword=" + URLEncoder.encode(keyword) + "&page=" + page + "&rows=40", listener, errListener);
             }
         });
     }
@@ -114,41 +116,54 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Te
         Gson gson = new Gson();
         final SearchAllModel searchAll = gson.fromJson(s, SearchAllModel.class);
         if (searchAll.getTotal() == 0) {
-            progressDialog.dismiss();
+            stopProgerssDialog();
             Toast.makeText(view.getContext(), "没有找到相关信息，再试试其他的吧(｡◕‿‿◕｡)", Toast.LENGTH_SHORT).show();
         } else {
-            progressDialog.dismiss();
-            if (searchList == null || page == 1)
+            stopProgerssDialog();
+            if (searchList == null || page == 1) {
                 searchList = searchAll.getTngou();
-            else
+                titles = new ArrayList<>();
+                addTitlesToList(searchAll);
+                adapter = new SimpleAdapter(view.getContext(), titles, R.layout.list_searchitem,
+                        new String[]{"title_main", "type"}, new int[]{R.id.tv_search_title, R.id.tv_search_type});
+                lv_search.setAdapter(adapter);
+
+            } else {
                 searchList.addAll(searchAll.getTngou());
-            ArrayList<HashMap<String, String>> titles = new ArrayList<>();
-            for (int i = 0; i < searchList.size(); i++) {
-                HashMap<String, String> map = new HashMap<>();
-                String title = searchList.get(i).getTitle();
-                if (title.length() > 14)
-                    title = title.substring(0, 14) + "...";
-                map.put("title_main", title);
-//                        s=replaceType(s);
-                map.put("type", "分类：" + searchList.get(i).getType());
-                titles.add(map);
+                addTitlesToList(searchAll);
+                adapter.notifyDataSetChanged();
             }
-            SimpleAdapter adapter = new SimpleAdapter(view.getContext(), titles, R.layout.list_searchitem,
-                    new String[]{"title_main", "type"}, new int[]{R.id.tv_search_title, R.id.tv_search_type});
-            lv_search.setAdapter(adapter);
             lv_search.onRefreshComplete();
             lv_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(view.getContext(), ItemActivity.class);
                     Bundle bundle = new Bundle();
-                    SearchAllModel.Tngou sa = searchAll.getTngou().get(position-1);
+                    SearchAllModel.Tngou sa = searchList.get(position - 1);
                     bundle.putSerializable("searchAll", sa);
                     intent.putExtras(bundle);
                     intent.putExtra("kind", "searchAll");
                     startActivity(intent);
                 }
             });
+        }
+    }
+
+    /**
+     * 将每次上拉后新增加的内容放进titles
+     *
+     * @param searchAll
+     */
+    private void addTitlesToList(SearchAllModel searchAll) {
+        for (int i = 0; i < searchAll.getTngou().size(); i++) {
+            HashMap<String, String> map = new HashMap<>();
+            String title = searchAll.getTngou().get(i).getTitle();
+            if (title.length() > 14)
+                title = title.substring(0, 14) + "...";
+            map.put("title_main", title);
+//                        s=replaceType(s);
+            map.put("type", "分类：" + searchAll.getTngou().get(i).getType());
+            titles.add(map);
         }
     }
 
@@ -173,10 +188,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Te
     /**
      * 当在其他的fragment时点击返回键退回HealthFragment(标记为“healthFragment”)
      */
-    @Override
+   /* @Override
     public void onResume() {
         super.onResume();
-
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
         getView().setOnKeyListener(new View.OnKeyListener() {
@@ -194,14 +208,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Te
                 return false;
             }
         });
-    }
-
+    }*/
     private void search() {
         keyword = txt_search.getText().toString().trim();
-        progressDialog = new ProgressDialog(view.getContext());
-        progressDialog.show();
-        page=1;
-        DoRequest.doRequest(view.getContext(), true, Common.searchUrl + "?keyword=" + URLEncoder.encode(keyword) + "&page="+page+"&rows=40", listener, errListener);
+        startProgressDialog();
+        page = 1;
+        DoRequest.doRequest(view.getContext(), true, Common.searchUrl + "?keyword=" + URLEncoder.encode(keyword) + "&page=" + page + "&rows=40", listener, errListener);
         //设置图片透明度
         img_health.getBackground().setAlpha(100);
     }
@@ -213,5 +225,20 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Te
             search();
         }
         return false;
+    }
+
+    private void startProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = ProgressDialogCustom.createDialog(view.getContext());
+            progressDialog.setMessage("正在搜索...");
+        }
+        progressDialog.show();
+    }
+
+    private void stopProgerssDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog=null;
+        }
     }
 }

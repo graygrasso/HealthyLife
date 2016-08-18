@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.graygrass.healthylife.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -28,10 +29,9 @@ public class DoRequest {
             request = new StringRequest(Request.Method.POST, url, listener, errListener);
 
         queue.add(request);
-
     }
 
-    public static void doImageRequest(String url, final ImageView img) {
+    public static void doImageRequest2(String url, final ImageView img) {
         if (url != null && !url.equals("")) {
             final DisplayImageOptions options = new DisplayImageOptions.Builder()
                     .cacheInMemory(true)
@@ -45,5 +45,16 @@ public class DoRequest {
                 }
             });
         }
+    }
+
+    public static void doImageRequest(String imageUrl,ImageView mImageView) {
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.empty_photo)
+                .showImageOnFail(R.drawable.loadingfail)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
+        ImageLoader.getInstance().displayImage(imageUrl, mImageView, options);
     }
 }

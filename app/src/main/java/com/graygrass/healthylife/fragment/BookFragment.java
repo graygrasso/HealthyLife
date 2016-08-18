@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class BookFragment extends Fragment {
     private int page;
     private int bookListId;
     private List<BookListModel.T> bookList = null;
+    private ModelAdapter modelAdapter;
 
     @Nullable
     @Override
@@ -180,17 +182,19 @@ public class BookFragment extends Fragment {
     public void bookList(String s) {
         Gson gson = new Gson();
         final BookListModel bl = gson.fromJson(s, BookListModel.class);
-        if (bookList == null || page == 1)
+        if (bookList == null || page == 1) {
             bookList = bl.getList();
-        else
+            modelAdapter = new ModelAdapter(bookList, parentView.getContext(), "booklist");
+            lv_book.setAdapter(modelAdapter);
+        } else {
             bookList.addAll(bl.getList());
-        ModelAdapter adapter = new ModelAdapter(bookList, parentView.getContext(), "booklist");
-        lv_book.setAdapter(adapter);
+            modelAdapter.notifyDataSetChanged();
+        }
         lv_book.onRefreshComplete();
         lv_book.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                bookShow(bl.getList().get(position - 1).getId());//得到用于查询图书详情的id传入drugShow()
+                bookShow(bookList.get(position - 1).getId());//得到用于查询图书详情的id传入drugShow()
             }
         });
     }

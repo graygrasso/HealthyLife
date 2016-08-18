@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 /**
  * Created by 橘沐 on 2015/12/27.
+ * 首页
  */
 public class HealthFragment extends Fragment {
     private View view;
@@ -30,8 +31,7 @@ public class HealthFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_health, container, false);
-
-        viewPager = (ViewPager) view.findViewById(R.id.viewPager);
+        viewPager = (ViewPager) view.findViewById(R.id.viewPager_health);
         tabLayout = (SlidingTabLayout) view.findViewById(R.id.tabLayout);
         return view;
     }
@@ -42,7 +42,7 @@ public class HealthFragment extends Fragment {
         list = new ArrayList<>();
         list.add(new KnowledgeFragment());
         list.add(new DrugFragment());
-        list.add(new DrugStoreFragment());
+//        list.add(new DrugStoreFragment());
         list.add(new BookFragment());
         list.add(new IllnessFragment());
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager(), view.getContext(), list);
@@ -66,6 +66,7 @@ public class HealthFragment extends Fragment {
      * 当显示的是首页的时候双击返回键退出程序
      */
     long lastPress;
+
     @Override
     public void onResume() {
         super.onResume();

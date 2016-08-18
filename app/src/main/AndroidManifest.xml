@@ -5,7 +5,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -14,7 +13,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-     
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
@@ -34,6 +32,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
 
     <application
         android:name=".MyApplication"
@@ -59,7 +58,8 @@
         <activity android:name=".activity.CookListActivity" />
         <activity android:name=".activity.IntroGuideActivity" />
         <activity android:name=".activity.MyMapActivity" />
-        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.SettingActivity"
+            android:theme = "@style/SettingsDialog"/>
         <activity
             android:name=".activity.DialogLoginActivity"
             android:theme="@style/loginActivityStyle" />
@@ -115,7 +115,7 @@
         <service
             android:name="cn.jpush.android.service.DownloadService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
         <!-- Required SDK 核⼼心功能-->
         <!-- option since 2.0.5 可配置android:process 参数将PushService设置为独⽴立进程 -->
         <service
@@ -129,6 +129,7 @@
                 <action android:name="cn.jpush.android.intent.PUSH_TIME" />
             </intent-filter>
         </service>
+
         <!--Required SDK 核⼼心功能 since 1.8.0 -->
         <service
             android:name="cn.jpush.android.service.DaemonService"
@@ -145,8 +146,8 @@
             android:enabled="true"
             android:exported="false">
             <intent-filter android:priority="1000">
-                <!--Required 显示通知栏 -->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+                <!--Required 显⽰示通知栏 -->
                 <category android:name="${applicationId}" />
             </intent-filter>
             <intent-filter>
@@ -161,6 +162,7 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
+
         <!-- Required SDK核⼼心功能-->
         <!-- User defined. ⽤用户⾃自定义的⼲⼴广播接收器-->
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
